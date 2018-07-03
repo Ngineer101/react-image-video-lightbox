@@ -1,0 +1,34 @@
+{
+  "name": "react-mobile-lightbox",
+  "version": "1.0.0",
+  "description": "A React lightbox optimized for mobile UI with swiping and pinch zoom",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --watch",
+    "build": "webpack"
+  },
+  "keywords": [
+    "ligthbox",
+    "react",
+    "pinch",
+    "zoom",
+    "swiping",
+    "mobile"
+  ],
+  "author": "Ngineer101",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.4.1",
+    "webpack": "^4.12.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "webpack-command": "^0.3.1"
+  }
+}
