@@ -5,8 +5,8 @@ const MAX_SCALE = 4;
 const SETTLE_RANGE = 0.001;
 const ADDITIONAL_LIMIT = 0.2;
 const DOUBLE_TAP_THRESHOLD = 300;
-const ANIMATION_SPEED = 0.04;
-const RESET_ANIMATION_SPEED = 0.1;
+const ANIMATION_SPEED = 0.08;
+const RESET_ANIMATION_SPEED = 0.08;
 const INITIAL_X = 0;
 const INITIAL_Y = 0;
 const INITIAL_SCALE = 1;
@@ -17,18 +17,12 @@ const settle = (val, target, range) => {
     return lowerRange || upperRange ? target : val;
 };
 
-const getPointFromTouch = (touch, element) => {
-    const rect = element.getBoundingClientRect();
+const getPointFromTouch = (touch) => {
     return {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top,
+        x: touch.clientX,
+        y: touch.clientY
     };
 };
-
-const getMidpoint = (pointA, pointB) => ({
-    x: (pointA.x + pointB.x) / 2,
-    y: (pointA.y + pointB.y) / 2,
-});
 
 const getDistanceBetweenPoints = (pointA, pointB) => (
     Math.sqrt(Math.pow(pointA.y - pointB.y, 2) + Math.pow(pointA.x - pointB.x, 2))
@@ -37,8 +31,6 @@ const getDistanceBetweenPoints = (pointA, pointB) => (
 const between = (min, max, value) => Math.min(max, Math.max(min, value));
 
 class ReactMobileLightbox extends React.Component {
-
-    swipeStartX = null;
 
     constructor() {
         super(...arguments);
@@ -58,14 +50,14 @@ class ReactMobileLightbox extends React.Component {
         this.handleTouchEnd = this.handleTouchEnd.bind(this);
     }
 
-    zoomTo(scale, midpoint) {
+    zoomTo(scale) {
         const frame = () => {
             if (this.state.scale === scale) return null;
 
             const distance = scale - this.state.scale;
             const targetScale = this.state.scale + (ANIMATION_SPEED * distance);
 
-            this.zoom(settle(targetScale, scale, SETTLE_RANGE), midpoint);
+            this.zoom(settle(targetScale, scale, SETTLE_RANGE));
             this.animation = requestAnimationFrame(frame);
         };
 
@@ -75,23 +67,19 @@ class ReactMobileLightbox extends React.Component {
     reset() {
         const frame = () => {
             if (this.state.scale === INITIAL_SCALE && this.state.x === INITIAL_X && this.state.y === INITIAL_Y) return null;
-            const distance = INITIAL_SCALE - this.state.scale;
-            const distanceX = INITIAL_X - this.state.x;
-            const distanceY = INITIAL_Y - this.state.y;
 
-            const targetScale = settle(this.state.scale + (RESET_ANIMATION_SPEED * distance), INITIAL_SCALE, SETTLE_RANGE);
-            const targetX = settle(this.state.x + (RESET_ANIMATION_SPEED * distanceX), INITIAL_X, SETTLE_RANGE);
-            const targetY = settle(this.state.y + (RESET_ANIMATION_SPEED * distanceY), INITIAL_Y, SETTLE_RANGE);
+            const scaleDelta = INITIAL_SCALE - this.state.scale;
+            const targetScale = settle(this.state.scale + (RESET_ANIMATION_SPEED * scaleDelta), INITIAL_SCALE, SETTLE_RANGE);
 
             const nextWidth = this.props.width * targetScale;
             const nextHeight = this.props.height * targetScale;
 
             this.setState({
-                x: targetX,
-                y: targetY,
                 scale: targetScale,
                 width: nextWidth,
-                height: nextHeight
+                height: nextHeight,
+                x: INITIAL_X,
+                y: INITIAL_Y
             }, () => {
                 this.animation = requestAnimationFrame(frame);
             });
@@ -114,8 +102,8 @@ class ReactMobileLightbox extends React.Component {
     handleTouchEnd(event) {
         if (event.touches.length > 0) return null;
 
-        if (this.state.scale > MAX_SCALE) return this.zoomTo(MAX_SCALE, this.lastMidpoint);
-        if (this.state.scale < MIN_SCALE) return this.zoomTo(MIN_SCALE, this.lastMidpoint);
+        if (this.state.scale > MAX_SCALE) return this.zoomTo(MAX_SCALE);
+        if (this.state.scale < MIN_SCALE) return this.zoomTo(MIN_SCALE);
 
         if (this.lastTouchEnd && this.lastTouchEnd + DOUBLE_TAP_THRESHOLD > event.timeStamp) {
             this.reset();
@@ -136,8 +124,6 @@ class ReactMobileLightbox extends React.Component {
         if (event.changedTouches[0].clientX > this.swipeStartX) {
             this.swipeLeft(event.target);
         }
-        
-        console.log(this.state.index);
     }
 
     swipeLeft(target) {
@@ -148,6 +134,8 @@ class ReactMobileLightbox extends React.Component {
                 swiping: false,
                 x: INITIAL_X
             });
+        } else {
+            this.reset();
         }
     }
 
@@ -155,25 +143,25 @@ class ReactMobileLightbox extends React.Component {
         var currentIndex = this.state.index;
         var imageCount = this.props.imageUrls.length;
         if (currentIndex < (imageCount - 1)) {
+            target.style.transform = 'translate(-100% 0px)';
             this.setState({
                 index: currentIndex + 1,
                 swiping: false,
                 x: INITIAL_X
             });
+        } else {
+            this.reset();
         }
     }
 
     handleTapStart(event) {
         var currentScale = this.state.scale;
+        this.swipeStartX = event.touches[0].clientX;
+        this.swipeStartY = event.touches[0].clientY;
         if (currentScale === 1) {
-            this.swipeStartX = event.touches[0].clientX;
             this.setState({
                 swiping: true
             });
-        }
-
-        if (currentScale > 1) {
-            this.lastPanPoint = getPointFromTouch(event.touches[0], this.container);
         }
     }
 
@@ -184,58 +172,61 @@ class ReactMobileLightbox extends React.Component {
             });
         } else {
             event.preventDefault();
-
-            const point = getPointFromTouch(event.touches[0], this.container);
-            const nextX = this.state.x + point.x - this.lastPanPoint.x;
-            const nextY = this.state.y + point.y - this.lastPanPoint.y;
-
             this.setState({
-                x: between(this.props.width - this.state.width, 0, nextX),
-                y: between(this.props.height - this.state.height, 0, nextY),
+                x: event.touches[0].clientX - this.swipeStartX,
+                y: event.touches[0].clientY - this.swipeStartY
             });
-
-            this.lastPanPoint = point;
         }
     }
 
     handlePinchStart(event) {
-        const pointA = getPointFromTouch(event.touches[0], this.container);
-        const pointB = getPointFromTouch(event.touches[1], this.container);
+        const pointA = getPointFromTouch(event.touches[0]);
+        const pointB = getPointFromTouch(event.touches[1]);
         this.lastDistance = getDistanceBetweenPoints(pointA, pointB);
     }
 
     handlePinchMove(event) {
         event.preventDefault();
-        const pointA = getPointFromTouch(event.touches[0], this.container);
-        const pointB = getPointFromTouch(event.touches[1], this.container);
+        const pointA = getPointFromTouch(event.touches[0]);
+        const pointB = getPointFromTouch(event.touches[1]);
         const distance = getDistanceBetweenPoints(pointA, pointB);
-        const midpoint = getMidpoint(pointA, pointB);
         const scale = between(MIN_SCALE - ADDITIONAL_LIMIT, MAX_SCALE + ADDITIONAL_LIMIT, this.state.scale * (distance / this.lastDistance));
-
-        this.zoom(scale, midpoint);
-
-        this.lastMidpoint = midpoint;
+        this.zoom(scale);
         this.lastDistance = distance;
     }
 
-    zoom(scale, midpoint) {
+    zoom(scale) {
         const nextWidth = this.props.width * scale;
         const nextHeight = this.props.height * scale;
-        const nextX = this.state.x + (-1 * (midpoint.x * scale) * (nextWidth - this.state.width) / nextWidth);
-        const nextY = this.state.y + (-1 * (midpoint.y * scale) * (nextHeight - this.state.height) / nextHeight);
 
         this.setState({
             width: nextWidth,
             height: nextHeight,
-            x: nextX,
-            y: nextY
+            scale
         });
     }
 
+    getIs() {
+        let items = [];
+        for (var i = 0; i < this.props.imageUrls.length; i++) {
+            items.push(<img key={i}
+                alt=""
+                src={this.props.imageUrls[i]}
+                style={{
+                    pointerEvents: this.state.scale === 1 ? 'auto' : 'none',
+                    transform: `translate(${this.state.x}px, ${this.state.y}px) scale(${this.state.scale})`,
+                    transition: 'transform 0.5s ease-out',
+                    backgroundImage: '/../loader_dark.gif'
+                }} />);
+        }
+
+        return items;
+    }
+
     render() {
+        let i = this.getIs();
         return (
             <div
-                ref={(ref) => this.container = ref}
                 onTouchStart={this.handleTouchStart}
                 onTouchMove={this.handleTouchMove}
                 onTouchEnd={this.handleTouchEnd}
@@ -251,14 +242,15 @@ class ReactMobileLightbox extends React.Component {
                     backgroundColor: 'rgba(0,0,0,0.9)'
                 }}
             >
-                <img alt=""
-                    src={this.props.imageUrls[this.state.index]}
+                {
+                    i[this.state.index]
+                    /* <img alt=""
+                    src={i[this.state.index]}
                     style={{
                         pointerEvents: this.state.scale === 1 ? 'auto' : 'none',
                         transform: `translate(${this.state.x}px, ${this.state.y}px) scale(${this.state.scale})`,
-                        transition: 'transform 0.5s ease-out'
-                    }} />
-
+                        
+                    }} /> */}
             </div>
         );
     }

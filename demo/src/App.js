@@ -9,7 +9,7 @@ class App extends Component {
         <ReactMobileLightbox
           width={window.innerWidth}
           height={window.innerHeight}
-          imageUrls={['https://placekitten.com/300/300', 'https://placekitten.com/320/300', 'https://placekitten.com/350/300']}
+          imageUrls={['https://placekitten.com/450/300', 'https://placekitten.com/420/350', 'https://placekitten.com/550/500']}
           startIndex={0} />
       </div>
     );
