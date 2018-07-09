@@ -1,26 +1,34 @@
 {
-  "name": "react-mobile-lightbox",
+  "name": "react-image-video-lightbox",
   "version": "1.0.0",
-  "description": "A React lightbox optimized for mobile UI with swiping and pinch zoom",
+  "description": "A React lightbox that supports videos, images and pinch zooming on images.  Optimized for mobile UI with swiping, but can be used on desktop as well.",
   "main": "build/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack --watch",
-    "build": "webpack"
+    "build": "webpack",
+    "prepublish": "npm run build"
   },
   "keywords": [
-    "ligthbox",
+    "lightbox",
     "react",
     "pinch",
     "zoom",
     "swiping",
-    "mobile"
+    "mobile",
+    "desktop",
+    "video",
+    "image"
   ],
-  "author": "Ngineer101",
+  "author": "Ngineer101 <botha.nicow@gmail.com>",
   "license": "MIT",
+  "repository": "https://github.com/Ngineer101/react-image-video-lightbox",
+  "bugs": "https://github.com/Ngineer101/react-image-video-lightbox/issues",
+  "files": [
+    "build/index.js"
+  ],
   "dependencies": {
-    "react": "^16.4.1",
-    "webpack": "^4.12.2"
+    "react": "^16.4.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -29,6 +37,8 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.7.0",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.12.2",
     "webpack-command": "^0.3.1"
   }
 }
