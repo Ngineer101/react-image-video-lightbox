@@ -20,12 +20,13 @@ class App extends Component {
           this.state.lightboxOpen &&
           <ReactImageVideoLightbox
             data={[
-              { url: 'https://placekitten.com/450/300', type: 'photo', altTag: 'placeholder image' },
+              { url: 'https://placekitten.com/550/500', type: 'photo', altTag: 'placeholder image' },
               { url: 'https://www.youtube.com/embed/ScMzIvxBSi4?rel=0', type: 'video', altTag: 'placeholder video' },
-              { url: 'https://placekitten.com/420/350', type: 'photo', altTag: 'placeholder image' },
+              { url: 'https://placekitten.com/620/650', type: 'photo', altTag: 'placeholder image' },
               { url: 'https://placekitten.com/550/500', type: 'photo', altTag: 'placeholder image' },
               { url: 'https://www.youtube.com/embed/ScMzIvxBSi4?rel=0', type: 'video', altTag: 'placeholder video' }]}
             startIndex={0}
+            showResourceCount={true}
             onCloseCallback={() => { this.setState({ lightboxOpen: false }); }} />
         }
       </div>
