@@ -20,16 +20,6 @@ module.exports = {
                         presets: ['env']
                     }
                 }
-            },
-            {
-                test: /\.(png|jp(e*)g|svg|gif)$/,
-                use: [{
-                    loader: 'url-loader',
-                    options: {
-                        limit: 8000,
-                        name: 'resources/[hash]-[name].[ext]'
-                    }
-                }]
             }
         ]
     },

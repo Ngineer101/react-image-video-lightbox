@@ -1,7 +1,9 @@
 import React from 'react';
 import * as utils from './utils';
-import loader_dark from './resources/loader_dark.gif';
-import clear from './resources/clear.png';
+import NavigateBefore from '@material-ui/icons/NavigateBefore';
+import NavigateNext from '@material-ui/icons/NavigateNext'
+import Close from '@material-ui/icons/Close';
+import { CircularProgress } from '../../node_modules/@material-ui/core';
 
 const MIN_SCALE = 1;
 const MAX_SCALE = 4;
@@ -13,6 +15,8 @@ const RESET_ANIMATION_SPEED = 0.08;
 const INITIAL_X = 0;
 const INITIAL_Y = 0;
 const INITIAL_SCALE = 1;
+const MOBILE_ICON_SIZE = 35;
+const DESKTOP_ICON_SIZE = 50;
 
 class ReactImageVideoLightbox extends React.Component {
 
@@ -26,7 +30,9 @@ class ReactImageVideoLightbox extends React.Component {
             width: window.innerWidth,
             height: window.innerHeight,
             index: this.props.startIndex,
-            swiping: false
+            swiping: false,
+            loading: true,
+            iconSize: window.innerWidth <= 500 ? MOBILE_ICON_SIZE : DESKTOP_ICON_SIZE
         };
 
         this.width = window.innerWidth;
@@ -120,7 +126,8 @@ class ReactImageVideoLightbox extends React.Component {
                 this.setState({
                     index: currentIndex - 1,
                     swiping: false,
-                    x: INITIAL_X
+                    x: INITIAL_X,
+                    loading: true
                 });
             }, 500);
         } else {
@@ -135,7 +142,8 @@ class ReactImageVideoLightbox extends React.Component {
                 this.setState({
                     index: currentIndex + 1,
                     swiping: false,
-                    x: INITIAL_X
+                    x: INITIAL_X,
+                    loading: true
                 });
             }, 500);
         } else {
@@ -194,6 +202,14 @@ class ReactImageVideoLightbox extends React.Component {
         });
     }
 
+    handleWindowResize = () => {
+        if (window.innerWidth <= 500) {
+            this.setState({ iconSize: MOBILE_ICON_SIZE });
+        } else {
+            this.setState({ iconSize: DESKTOP_ICON_SIZE });
+        }
+    };
+
     getResources() {
         var items = [];
         var data = this.props.data;
@@ -208,35 +224,41 @@ class ReactImageVideoLightbox extends React.Component {
                         maxWidth: '100%',
                         maxHeight: '100%',
                         transform: `translate(${this.state.x}px, ${this.state.y}px) scale(${this.state.scale})`,
-                        transition: 'transform 0.5s ease-out',
-                        backgroundImage: `url(${loader_dark})`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'center'
-                    }} />);
+                        transition: 'transform 0.5s ease-out'
+                    }}
+                    onLoad={() => { this.setState({ loading: false }); }} />);
             }
 
             if (resource.type === 'video') {
                 items.push(<iframe key={i}
-                        width="560"
-                        height="315"
-                        src={resource.url}
-                        frameBorder="0"
-                        allow="autoplay; encrypted-media"
-                        alt={resource.altTag}
-                        style={{
-                            pointerEvents: this.state.scale === 1 ? 'auto' : 'none',
-                            maxWidth: '100%',
-                            maxHeight: '100%',
-                            transform: `translate(${this.state.x}px, ${this.state.y}px)`,
-                            transition: 'transform 0.5s ease-out',
-                            backgroundImage: `url(${loader_dark})`,
-                            backgroundRepeat: 'no-repeat',
-                            backgroundPosition: 'center'
-                        }}></iframe>);
+                    width="560"
+                    height="315"
+                    src={resource.url}
+                    frameBorder="0"
+                    allow="autoplay; encrypted-media"
+                    title={resource.title}
+                    alt={resource.altTag}
+                    allowFullScreen
+                    style={{
+                        pointerEvents: this.state.scale === 1 ? 'auto' : 'none',
+                        maxWidth: '100%',
+                        maxHeight: '100%',
+                        transform: `translate(${this.state.x}px, ${this.state.y}px)`,
+                        transition: 'transform 0.5s ease-out'
+                    }}
+                    onLoad={() => { this.setState({ loading: false }); }}></iframe>);
             }
         }
 
         return items;
+    }
+
+    componentWillMount() {
+        window.addEventListener('resize', this.handleWindowResize);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleWindowResize);
     }
 
     render() {
@@ -259,16 +281,65 @@ class ReactImageVideoLightbox extends React.Component {
                     width: '100%',
                     backgroundColor: 'rgba(0,0,0,1)'
                 }}>
-                <img
-                    alt=""
-                    src={`${clear}`}
+
+                {
+                    this.props.showResourceCount &&
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: '0px',
+                            left: '0px',
+                            padding: '15px',
+                            color: 'white',
+                            fontWeight: 'bold'
+                        }}>
+                        <span>{this.state.index + 1}</span> / <span>{this.props.data.length}</span>
+                    </div>
+                }
+
+                <Close
                     style={{
                         position: 'absolute',
                         top: '0px',
                         right: '0px',
                         padding: '10px',
+                        color: '#FFFFFF',
+                        cursor: 'pointer',
+                        fontSize: `${this.state.iconSize * 0.8}px`
                     }}
                     onClick={this.props.onCloseCallback} />
+
+                <NavigateBefore
+                    style={{
+                        position: 'absolute',
+                        left: '0px',
+                        zIndex: 1,
+                        color: '#FFFFFF',
+                        cursor: 'pointer',
+                        fontSize: `${this.state.iconSize}px`
+                    }}
+                    onClick={() => { this.swipeLeft(); }} />
+
+                <NavigateNext
+                    style={{
+                        position: 'absolute',
+                        right: '0px',
+                        zIndex: 1,
+                        color: '#FFFFFF',
+                        cursor: 'pointer',
+                        fontSize: `${this.state.iconSize}px`
+                    }}
+                    onClick={() => { this.swipeRight(); }} />
+
+                {
+                    this.state.loading &&
+                    <CircularProgress
+                        style={{
+                            position: 'absolute',
+                            color: '#FFFFFF'
+                        }} />
+                }
+
                 {
                     resources[this.state.index]
                 }
