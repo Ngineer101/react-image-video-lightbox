@@ -17,6 +17,7 @@ npm install react-image-video-lightbox
             { url: 'https://www.youtube.com/embed/dZH897lF0_c', type: 'video', altTag: 'some other video' }
         ]}
         startIndex={0}
+        showResourceCount={true}
         onCloseCallback={this.callbackFunction} />
 ```
 
@@ -26,6 +27,7 @@ npm install react-image-video-lightbox
 |--------|----|-----------|
 |data|Array of resources|an array of resource objects (see resource object below)|
 |startIndex|number|index of image/video where the lightbox should open|
+|showResourceCount|boolean|show resource count in left upper corner|
 |onCloseCallback|Function => void|callback function called when the lightbox is closed|
 
 ### Resource Object
