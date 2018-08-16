@@ -12,9 +12,9 @@ npm install react-image-video-lightbox
     <ReactImageVideoLightbox
         data={[
             { url: 'https://placekitten.com/450/300', type: 'photo', altTag: 'some image' },
-            { url: 'https://www.youtube.com/embed/dZH897lF0_c', type: 'video', altTag: 'some video' },
+            { url: 'https://www.youtube.com/embed/ScMzIvxBSi4', type: 'video', altTag: 'some video' },
             { url: 'https://placekitten.com/550/500', type: 'photo', altTag: 'some other image' },
-            { url: 'https://www.youtube.com/embed/dZH897lF0_c', type: 'video', altTag: 'some other video' }
+            { url: 'https://www.youtube.com/embed/ScMzIvxBSi4', type: 'video', altTag: 'some other video' }
         ]}
         startIndex={0}
         showResourceCount={true}
@@ -43,3 +43,6 @@ More properties to follow...
 
 ## Want to contribute?
 Fork repo, submit pull request.
+
+## Have a feature request or improvement suggestion?
+Create an issue on Github at: https://github.com/Ngineer101/react-image-video-lightbox/issues
