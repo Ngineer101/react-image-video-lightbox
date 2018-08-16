@@ -3,7 +3,7 @@ import * as utils from './utils';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 import NavigateNext from '@material-ui/icons/NavigateNext'
 import Close from '@material-ui/icons/Close';
-import { CircularProgress } from '../../node_modules/@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 
 const MIN_SCALE = 1;
 const MAX_SCALE = 4;
@@ -202,14 +202,6 @@ class ReactImageVideoLightbox extends React.Component {
         });
     }
 
-    handleWindowResize = () => {
-        if (window.innerWidth <= 500) {
-            this.setState({ iconSize: MOBILE_ICON_SIZE });
-        } else {
-            this.setState({ iconSize: DESKTOP_ICON_SIZE });
-        }
-    };
-
     getResources() {
         var items = [];
         var data = this.props.data;
@@ -254,11 +246,23 @@ class ReactImageVideoLightbox extends React.Component {
     }
 
     componentWillMount() {
-        window.addEventListener('resize', this.handleWindowResize);
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 500) {
+                this.setState({ iconSize: MOBILE_ICON_SIZE });
+            } else {
+                this.setState({ iconSize: DESKTOP_ICON_SIZE });
+            }
+        });
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.handleWindowResize);
+        window.removeEventListener('resize', () => {
+            if (window.innerWidth <= 500) {
+                this.setState({ iconSize: MOBILE_ICON_SIZE });
+            } else {
+                this.setState({ iconSize: DESKTOP_ICON_SIZE });
+            }
+        });
     }
 
     render() {
