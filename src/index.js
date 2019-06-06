@@ -208,38 +208,55 @@ class ReactImageVideoLightbox extends React.Component {
         for (var i = 0; i < data.length; i++) {
             var resource = data[i];
             if (resource.type === 'photo') {
-                items.push(<img key={i}
-                    alt={resource.altTag}
-                    src={resource.url || resource.src}
-                    srcSet={resource.srcSet}
+                items.push(<div key={i}
                     style={{
-                        pointerEvents: this.state.scale === 1 ? 'auto' : 'none',
-                        maxWidth: '100%',
-                        maxHeight: '100%',
-                        transform: `translate(${this.state.x}px, ${this.state.y}px) scale(${this.state.scale})`,
-                        transition: 'transform 0.5s ease-out'
-                    }}
-                    onLoad={() => { this.setState({ loading: false }); }} />);
+                        position: 'relative'
+                    }}>
+                        <img alt={resource.altTag}
+                            src={resource.url || resource.src}
+                            srcSet={resource.srcSet}
+                            style={{
+                                pointerEvents: this.state.scale === 1 ? 'auto' : 'none',
+                                maxWidth: '100%',
+                                maxHeight: '100%',
+                                transform: `translate(${this.state.x}px, ${this.state.y}px) scale(${this.state.scale})`,
+                                transition: 'transform 0.5s ease-out'
+                            }}
+                            onLoad={() => { this.setState({ loading: false }); }} />
+                        <div style={{
+                            position: 'absolute',
+                            'padding-top': '12px'
+                        }}>{resource.caption}</div>
+                    </div>);
             }
 
             if (resource.type === 'video') {
-                items.push(<iframe key={i}
-                    width="560"
-                    height="315"
-                    src={resource.url}
-                    frameBorder="0"
-                    allow="autoplay; encrypted-media"
-                    title={resource.title}
-                    alt={resource.altTag}
-                    allowFullScreen
+                items.push(<div key={i}
                     style={{
-                        pointerEvents: this.state.scale === 1 ? 'auto' : 'none',
-                        maxWidth: '100%',
-                        maxHeight: '100%',
-                        transform: `translate(${this.state.x}px, ${this.state.y}px)`,
-                        transition: 'transform 0.5s ease-out'
-                    }}
-                    onLoad={() => { this.setState({ loading: false }); }}></iframe>);
+                        position: 'relative'
+                    }}>
+                        <iframe key={i}
+                            width="560"
+                            height="315"
+                            src={resource.url}
+                            frameBorder="0"
+                            allow="autoplay; encrypted-media"
+                            title={resource.title}
+                            alt={resource.altTag}
+                            allowFullScreen
+                            style={{
+                                pointerEvents: this.state.scale === 1 ? 'auto' : 'none',
+                                maxWidth: '100%',
+                                maxHeight: '100%',
+                                transform: `translate(${this.state.x}px, ${this.state.y}px)`,
+                                transition: 'transform 0.5s ease-out'
+                            }}
+                            onLoad={() => { this.setState({ loading: false }); }}></iframe>
+                        <div style={{
+                            position: 'absolute',
+                            'padding-top': '12px'
+                        }}>{resource.caption}</div>
+                    </div>);
             }
         }
 
