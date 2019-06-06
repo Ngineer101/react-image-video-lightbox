@@ -34,8 +34,11 @@ npm install react-image-video-lightbox
 |Property|Type|Description|
 |--------|----|-----------|
 |url|string|url of the image/video|
+|src|string|url of the image/video (same as 'url')|
+|srcSet|string|added support for srcsets (responsive image sets)|
 |type|string|only two types are supported at this stage - images & videos (Youtube videos are recommended)|
 |altTag|string|alt tag for image/video|
+|caption|string|image captions|
 
 More properties to follow...
 
