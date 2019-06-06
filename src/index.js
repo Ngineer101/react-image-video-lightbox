@@ -209,6 +209,7 @@ class ReactImageVideoLightbox extends React.Component {
             var resource = data[i];
             if (resource.type === 'photo') {
                 items.push(<div key={i}
+                    className={'riv-lightbox-image-wrapper'}
                     style={{
                         position: 'relative'
                     }}>
@@ -223,7 +224,8 @@ class ReactImageVideoLightbox extends React.Component {
                                 transition: 'transform 0.5s ease-out'
                             }}
                             onLoad={() => { this.setState({ loading: false }); }} />
-                        <div style={{
+                    <div className={'riv-lightbox-caption'}
+                        style={{
                             position: 'absolute',
                             'padding-top': '12px'
                         }}>{resource.caption}</div>
@@ -232,6 +234,7 @@ class ReactImageVideoLightbox extends React.Component {
 
             if (resource.type === 'video') {
                 items.push(<div key={i}
+                    className={'riv-lightbox-image-wrapper'}
                     style={{
                         position: 'relative'
                     }}>
@@ -252,10 +255,12 @@ class ReactImageVideoLightbox extends React.Component {
                                 transition: 'transform 0.5s ease-out'
                             }}
                             onLoad={() => { this.setState({ loading: false }); }}></iframe>
-                        <div style={{
-                            position: 'absolute',
-                            'padding-top': '12px'
-                        }}>{resource.caption}</div>
+                        <div 
+                            className={'riv-lightbox-caption'}
+                            style={{
+                                position: 'absolute',
+                                'padding-top': '12px'
+                            }}>{resource.caption}</div>
                     </div>);
             }
         }
@@ -286,7 +291,8 @@ class ReactImageVideoLightbox extends React.Component {
     render() {
         var resources = this.getResources();
         return (
-            <div
+            <div 
+                className={'riv-lightbox'}
                 onTouchStart={this.handleTouchStart}
                 onTouchMove={this.handleTouchMove}
                 onTouchEnd={this.handleTouchEnd}
@@ -307,6 +313,7 @@ class ReactImageVideoLightbox extends React.Component {
                 {
                     this.props.showResourceCount &&
                     <div
+                        className={'riv-lightbox-count'}
                         style={{
                             position: 'absolute',
                             top: '0px',
