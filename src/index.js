@@ -210,7 +210,8 @@ class ReactImageVideoLightbox extends React.Component {
             if (resource.type === 'photo') {
                 items.push(<img key={i}
                     alt={resource.altTag}
-                    src={resource.url}
+                    src={resource.url || resource.src}
+                    srcSet={resource.srcSet}
                     style={{
                         pointerEvents: this.state.scale === 1 ? 'auto' : 'none',
                         maxWidth: '100%',
