@@ -329,9 +329,8 @@ class ReactImageVideoLightbox extends React.Component {
                 <Close
                     style={{
                         position: 'absolute',
-                        top: '0px',
-                        right: '0px',
-                        padding: '10px',
+                        top: '10px',
+                        right: '10px',
                         color: '#FFFFFF',
                         cursor: 'pointer',
                         fontSize: `${this.state.iconSize * 0.8}px`
