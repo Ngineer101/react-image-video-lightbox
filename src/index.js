@@ -207,40 +207,37 @@ class ReactImageVideoLightbox extends React.Component {
         var data = this.props.data;
         for (var i = 0; i < data.length; i++) {
             var resource = data[i];
-            if (resource.type === 'photo') {
-                items.push(<div key={i}
-                    className={'riv-lightbox-image-wrapper'}
-                    style={{
-                        position: 'relative'
-                    }}>
+            items.push(<div key={i}
+                className={'riv-lightbox-image-wrapper'}
+                style={{
+                    position: 'relative'
+                }}>
+                <div
+                    // style={{
+                    //     maxWidth: '100%',
+                    //     maxHeight: '100%',
+                    //     transform: `translate(${this.state.x}px, ${this.state.y}px) scale(${this.state.scale})`,
+                    //     transition: 'transform 0.5s ease-out'
+                    // }}
+                >
+                    {resource.type === 'photo' && (
                         <img alt={resource.altTag}
                             src={resource.url || resource.src}
                             srcSet={resource.srcSet}
-                            style={{
-                                pointerEvents: this.state.scale === 1 ? 'auto' : 'none',
-                                maxWidth: '100%',
-                                maxHeight: '100%',
-                                transform: `translate(${this.state.x}px, ${this.state.y}px) scale(${this.state.scale})`,
-                                transition: 'transform 0.5s ease-out'
-                            }}
-                            onLoad={() => { this.setState({ loading: false }); }} />
-                    <div className={'riv-lightbox-caption'}
-                        style={{
-                            position: 'absolute',
-                            'padding-top': '12px'
-                        }}>{resource.caption}</div>
-                    </div>);
-            }
-
-            if (resource.type === 'video') {
-                items.push(<div key={i}
-                    className={'riv-lightbox-image-wrapper'}
-                    style={{
-                        position: 'relative'
-                    }}>
+                                style={{
+                                    pointerEvents: this.state.scale === 1 ? 'auto' : 'none',
+                                    maxWidth: '100%',
+                                    maxHeight: '100%',
+                                    transform: `translate(${this.state.x}px, ${this.state.y}px) scale(${this.state.scale})`,
+                                    transition: 'transform 0.5s ease-out'
+                                }}
+                            onLoad={() => { this.setState({ loading: false }); }} 
+                        />
+                    )}
+                    {resource.type === 'video' && (
                         <iframe key={i}
-                            width="560"
-                            height="315"
+                            width="100%"
+                            height="100%"
                             src={resource.url}
                             frameBorder="0"
                             allow="autoplay; encrypted-media"
@@ -254,15 +251,29 @@ class ReactImageVideoLightbox extends React.Component {
                                 transform: `translate(${this.state.x}px, ${this.state.y}px)`,
                                 transition: 'transform 0.5s ease-out'
                             }}
-                            onLoad={() => { this.setState({ loading: false }); }}></iframe>
-                        <div 
-                            className={'riv-lightbox-caption'}
-                            style={{
-                                position: 'absolute',
-                                'padding-top': '12px'
-                            }}>{resource.caption}</div>
-                    </div>);
-            }
+                            onLoad={() => { this.setState({ loading: false }); }}
+                        ></iframe>
+                    )}
+                    <div className={'riv-lightbox-caption-wrapper'}
+                        style={{ 'padding-top': '12px' }}
+                        >
+                        {!!resource.author && (
+                            <div className={'riv-lightbox-author-wrapper'}>
+                                {!!resource.authorImage && (
+                                    <div className={'riv-lightbox-author-image'}>
+                                        <img src={resource.authorImage} />
+                                    </div>
+                                )}
+                                <div className={'riv-lightbox-author'}>{resource.author}</div>
+                            </div>
+                        )}
+                        <div className={'riv-lightbox-caption'}>
+                            {resource.caption}
+                        </div>
+                    </div>
+                </div>
+            </div>);
+
         }
 
         return items;
