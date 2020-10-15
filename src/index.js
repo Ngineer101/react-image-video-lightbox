@@ -40,6 +40,9 @@ class ReactImageVideoLightbox extends React.Component {
         this.handleTouchStart = this.handleTouchStart.bind(this);
         this.handleTouchMove = this.handleTouchMove.bind(this);
         this.handleTouchEnd = this.handleTouchEnd.bind(this);
+        this.onNavigationCallback = this.props.onNavigationCallback && typeof this.props.onNavigationCallback === 'function'
+            ? this.props.onNavigationCallback
+            : () => { };
     }
 
     zoomTo(scale) {
@@ -128,7 +131,7 @@ class ReactImageVideoLightbox extends React.Component {
                     swiping: false,
                     x: INITIAL_X,
                     loading: true
-                });
+                }, () => this.onNavigationCallback(currentIndex - 1));
             }, 500);
         } else {
             this.reset();
@@ -144,7 +147,7 @@ class ReactImageVideoLightbox extends React.Component {
                     swiping: false,
                     x: INITIAL_X,
                     loading: true
-                });
+                }, () => this.onNavigationCallback(currentIndex + 1));
             }, 500);
         } else {
             this.reset();
