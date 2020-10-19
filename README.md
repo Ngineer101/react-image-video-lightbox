@@ -29,6 +29,7 @@ npm install react-image-video-lightbox
 |startIndex|number|index of image/video where the lightbox should open|
 |showResourceCount|boolean|show resource count in left upper corner|
 |onCloseCallback|Function => void|callback function called when the lightbox is closed|
+|onNavigationCallback|Function => void|callback function called on navigation between assets|
 
 ### Resource Object
 |Property|Type|Description|
