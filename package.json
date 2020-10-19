@@ -1,7 +1,7 @@
 {
   "name": "react-image-video-lightbox",
-  "version": "2.0.1",
-  "description": "A React lightbox that supports videos, images and pinch zooming on images.  Optimized for mobile UI with swiping, but can be used on desktop as well.",
+  "version": "2.0.2",
+  "description": "A React lightbox that supports videos, images and pinch zooming on images. Optimized for mobile UI with swiping, but can be used on desktop as well.",
   "main": "build/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
