@@ -315,18 +315,23 @@ class ReactImageVideoLightbox extends React.Component {
                         fontSize: `${this.state.iconSize * 0.8}px`
                     }}
                     onClick={this.props.onCloseCallback} />
-
-                <NavigateBefore
-                    style={{
-                        position: 'absolute',
-                        left: '0px',
-                        zIndex: 1,
-                        color: '#FFFFFF',
-                        cursor: 'pointer',
-                        fontSize: `${this.state.iconSize}px`
-                    }}
-                    onClick={() => { this.swipeLeft(); }} />
-
+                {
+                  (this.state.index + 1 != 1)?
+                  <NavigateBefore
+                  style={{
+                      position: 'absolute',
+                      left: '0px',
+                      zIndex: 1,
+                      color: '#FFFFFF',
+                      cursor: 'pointer',
+                      fontSize: `${this.state.iconSize}px`
+                  }}
+                  onClick={() => { this.swipeLeft(); }} />
+                  :
+                  <></>
+                }
+                {
+                  (this.state.index + 1 != this.props.data.length)?
                 <NavigateNext
                     style={{
                         position: 'absolute',
@@ -337,7 +342,9 @@ class ReactImageVideoLightbox extends React.Component {
                         fontSize: `${this.state.iconSize}px`
                     }}
                     onClick={() => { this.swipeRight(); }} />
-
+                    :
+                    <></>
+                  }
                 {
                     this.state.loading &&
                     <CircularProgress
