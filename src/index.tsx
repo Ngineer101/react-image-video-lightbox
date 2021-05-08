@@ -14,20 +14,20 @@ const INITIAL_SCALE = 1;
 const MOBILE_ICON_SIZE = 35;
 const DESKTOP_ICON_SIZE = 50;
 
-interface IProps {
+interface IReactImageVideoLightboxProps {
   startIndex: number;
   showResourceCount: boolean;
-  onNavigationCallback: (index: number) => void;
+  onNavigationCallback?: (index: number) => void;
   onCloseCallback: () => void;
   data: {
     url: string,
-    title: string,
+    title?: string,
     type: 'photo' | 'video',
-    altTag: string,
+    altTag?: string,
   }[]
 }
 
-interface IState {
+interface IReactImageVideoLightboxState {
   x: number;
   y: number;
   scale: number;
@@ -39,7 +39,7 @@ interface IState {
   iconSize: number;
 }
 
-class ReactImageVideoLightbox extends React.Component<IProps, IState> {
+class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxProps, IReactImageVideoLightboxState> {
 
   width: number;
   height: number;
@@ -50,7 +50,7 @@ class ReactImageVideoLightbox extends React.Component<IProps, IState> {
   lastTouchEnd: number;
   onNavigationCallback: (index: number) => void;
 
-  constructor(props: IProps) {
+  constructor(props: IReactImageVideoLightboxProps) {
     super(props);
     this.state = {
       x: INITIAL_X,
@@ -391,7 +391,7 @@ class ReactImageVideoLightbox extends React.Component<IProps, IState> {
         {
           this.state.loading &&
           <>
-          {/* TODO: Add spinner */}
+            {/* TODO: Add spinner */}
           </>
         }
 
