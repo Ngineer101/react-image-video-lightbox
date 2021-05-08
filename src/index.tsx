@@ -43,11 +43,11 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
 
   width: number;
   height: number;
-  animation: number;
-  swipeStartX: number;
-  swipeStartY: number;
-  lastDistance: number;
-  lastTouchEnd: number;
+  animation: number = 0;
+  swipeStartX: number = 0;
+  swipeStartY: number = 0;
+  lastDistance: number = 0;
+  lastTouchEnd: number = 0;
   onNavigationCallback: (index: number) => void;
 
   constructor(props: IReactImageVideoLightboxProps) {
@@ -76,7 +76,7 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
 
   zoomTo(scale: number) {
     const frame = (): void => {
-      if (this.state.scale === scale) return null;
+      if (this.state.scale === scale) return;
 
       const distance = scale - this.state.scale;
       const targetScale = this.state.scale + (ANIMATION_SPEED * distance);
@@ -90,7 +90,7 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
 
   reset() {
     const frame = (): void => {
-      if (this.state.scale === INITIAL_SCALE && this.state.x === INITIAL_X && this.state.y === INITIAL_Y) return null;
+      if (this.state.scale === INITIAL_SCALE && this.state.x === INITIAL_X && this.state.y === INITIAL_Y) return;
 
       const scaleDelta = INITIAL_SCALE - this.state.scale;
       const targetScale = utils.settle(this.state.scale + (RESET_ANIMATION_SPEED * scaleDelta), INITIAL_SCALE, SETTLE_RANGE);
@@ -343,7 +343,7 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
             fontSize: `${this.state.iconSize * 0.8}px`
           }}
           onClick={this.props.onCloseCallback}>
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+          <svg xmlns="http://www.w3.org/2000/svg" height="36px" viewBox="0 0 24 24" width="36px" fill="#FFFFFF">
             <path d="M0 0h24v24H0z" fill="none" />
             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
           </svg>
@@ -360,7 +360,7 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
                 fontSize: `${this.state.iconSize}px`
               }}
               onClick={() => { this.swipeLeft(); }}>
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+              <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 0 24 24" width="48px" fill="#FFFFFF">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
               </svg>
@@ -380,7 +380,7 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
                 fontSize: `${this.state.iconSize}px`
               }}
               onClick={() => { this.swipeRight(); }}>
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+              <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 0 24 24" width="48px" fill="#FFFFFF">
                 <path d="M0 0h24v24H0z" fill="none" />
                 <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
               </svg>
