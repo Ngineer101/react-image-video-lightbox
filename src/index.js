@@ -273,7 +273,7 @@ class ReactImageVideoLightbox extends React.Component {
           top: '0px',
           left: '0px',
           overflow: 'hidden',
-          position: 'absolute',
+          position: 'fixed',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

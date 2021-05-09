@@ -19,15 +19,19 @@ export default class Demo extends Component {
           alignItems: "center",
         }}
       >
-        <h1>React image &amp; video lightbox demo</h1>
-        <h3>Click the button to view the lightbox</h3>
+        <h1 style={{ textAlign: "center" }}>
+          React image &amp; video lightbox demo
+        </h1>
+        <h3 style={{ textAlign: "center" }}>
+          Click the button to view the lightbox
+        </h3>
         <div>
           <button
             style={{
               padding: 20,
               border: "none",
               borderRadius: 5,
-              backgroundColor: 'lightgrey',
+              backgroundColor: "lightgrey",
             }}
             onClick={() => this.setState({ lightboxOpen: true })}
           >
@@ -61,7 +65,9 @@ export default class Demo extends Component {
             startIndex={0}
             showResourceCount={true}
             onCloseCallback={() => this.setState({ lightboxOpen: false })}
-            onNavigationCallback={(currentIndex) => console.log(`Current index: ${currentIndex}`)}
+            onNavigationCallback={(currentIndex) =>
+              console.log(`Current index: ${currentIndex}`)
+            }
           />
         )}
       </div>
