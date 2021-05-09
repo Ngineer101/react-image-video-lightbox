@@ -53,7 +53,7 @@ npm install react-image-video-lightbox
 | onCloseCallback      | Function => void               | callback function called when the lightbox is closed     |
 | onNavigationCallback | Function(currentIndex) => void | callback function called on navigation between resources |
 
-### Resource Object
+## Resource Object:
 
 | Property | Type   | Description                                                                                |
 | -------- | ------ | ------------------------------------------------------------------------------------------ |
