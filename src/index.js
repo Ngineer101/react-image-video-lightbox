@@ -14,43 +14,9 @@ const INITIAL_SCALE = 1;
 const MOBILE_ICON_SIZE = 35;
 const DESKTOP_ICON_SIZE = 50;
 
-interface IReactImageVideoLightboxProps {
-  startIndex: number;
-  showResourceCount: boolean;
-  onNavigationCallback?: (index: number) => void;
-  onCloseCallback: () => void;
-  data: {
-    url: string,
-    title?: string,
-    type: 'photo' | 'video',
-    altTag?: string,
-  }[]
-}
+class ReactImageVideoLightbox extends React.Component {
 
-interface IReactImageVideoLightboxState {
-  x: number;
-  y: number;
-  scale: number;
-  width: number;
-  height: number;
-  index: number;
-  swiping: boolean;
-  loading: boolean;
-  iconSize: number;
-}
-
-class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxProps, IReactImageVideoLightboxState> {
-
-  width: number;
-  height: number;
-  animation: number = 0;
-  swipeStartX: number = 0;
-  swipeStartY: number = 0;
-  lastDistance: number = 0;
-  lastTouchEnd: number = 0;
-  onNavigationCallback: (index: number) => void;
-
-  constructor(props: IReactImageVideoLightboxProps) {
+  constructor(props) {
     super(props);
     this.state = {
       x: INITIAL_X,
@@ -74,8 +40,8 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
       : () => { };
   }
 
-  zoomTo(scale: number) {
-    const frame = (): void => {
+  zoomTo(scale) {
+    const frame = () => {
       if (this.state.scale === scale) return;
 
       const distance = scale - this.state.scale;
@@ -89,7 +55,7 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
   }
 
   reset() {
-    const frame = (): void => {
+    const frame = () => {
       if (this.state.scale === INITIAL_SCALE && this.state.x === INITIAL_X && this.state.y === INITIAL_Y) return;
 
       const scaleDelta = INITIAL_SCALE - this.state.scale;
@@ -112,18 +78,18 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
     this.animation = requestAnimationFrame(frame);
   }
 
-  handleTouchStart(event: React.TouchEvent<HTMLDivElement>) {
+  handleTouchStart(event) {
     this.animation && cancelAnimationFrame(this.animation);
     if (event.touches.length === 2) this.handlePinchStart(event);
     if (event.touches.length === 1) this.handleTapStart(event);
   }
 
-  handleTouchMove(event: React.TouchEvent<HTMLDivElement>) {
+  handleTouchMove(event) {
     if (event.touches.length === 2) this.handlePinchMove(event);
     if (event.touches.length === 1) this.handlePanMove(event);
   }
 
-  handleTouchEnd(event: React.TouchEvent<HTMLDivElement>) {
+  handleTouchEnd(event) {
     if (event.touches.length > 0) return null;
 
     if (this.state.scale > MAX_SCALE) return this.zoomTo(MAX_SCALE);
@@ -140,7 +106,7 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
     this.lastTouchEnd = event.timeStamp;
   }
 
-  handleSwipe(event: React.TouchEvent<HTMLDivElement>) {
+  handleSwipe(event) {
     var swipeDelta = event.changedTouches[0].clientX - this.swipeStartX;
     if (swipeDelta < -(this.width / 3)) {
       this.swipeRight();
@@ -183,7 +149,7 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
     }
   }
 
-  handleTapStart(event: React.TouchEvent<HTMLDivElement>) {
+  handleTapStart(event) {
     this.swipeStartX = event.touches[0].clientX;
     this.swipeStartY = event.touches[0].clientY;
     if (this.state.scale === 1) {
@@ -193,7 +159,7 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
     }
   }
 
-  handlePanMove(event: React.TouchEvent<HTMLDivElement>) {
+  handlePanMove(event) {
     if (this.state.scale === 1) {
       this.setState({
         x: event.touches[0].clientX - this.swipeStartX
@@ -207,13 +173,13 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
     }
   }
 
-  handlePinchStart(event: React.TouchEvent<HTMLDivElement>) {
+  handlePinchStart(event) {
     const pointA = utils.getPointFromTouch(event.touches[0]);
     const pointB = utils.getPointFromTouch(event.touches[1]);
     this.lastDistance = utils.getDistanceBetweenPoints(pointA, pointB);
   }
 
-  handlePinchMove(event: React.TouchEvent<HTMLDivElement>) {
+  handlePinchMove(event) {
     event.preventDefault();
     const pointA = utils.getPointFromTouch(event.touches[0]);
     const pointB = utils.getPointFromTouch(event.touches[1]);
@@ -223,7 +189,7 @@ class ReactImageVideoLightbox extends React.Component<IReactImageVideoLightboxPr
     this.lastDistance = distance;
   }
 
-  zoom(scale: number) {
+  zoom(scale) {
     const nextWidth = this.width * scale;
     const nextHeight = this.height * scale;
 

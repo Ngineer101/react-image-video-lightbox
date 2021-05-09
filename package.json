@@ -2,12 +2,13 @@
   "name": "react-image-video-lightbox",
   "version": "3.0.0-rc1",
   "description": "A React lightbox that supports videos, images and pinch zooming on images. Optimized for mobile UI with swiping, but can be used on desktop as well.",
-  "main": "build/index.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --watch",
-    "build": "webpack",
-    "prepublish": "npm run build"
+    "build": "nwb build-react-component",
+    "clean": "nwb clean-module && nwb clean-demo",
+    "prepublishOnly": "npm run build",
+    "start": "nwb serve-react-demo"
   },
   "keywords": [
     "lightbox",
@@ -25,28 +26,17 @@
   "repository": "https://github.com/Ngineer101/react-image-video-lightbox",
   "bugs": "https://github.com/Ngineer101/react-image-video-lightbox/issues",
   "files": [
-    "build/index.js"
+    "css",
+    "es",
+    "lib",
+    "umd"
   ],
-  "types": "./dist/index.d.ts",
-  "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+  "peerDependencies": {
+    "react": "16.x"
   },
   "devDependencies": {
-    "@babel/cli": "^7.13.16",
-    "@babel/core": "^7.14.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.13.8",
-    "@babel/plugin-transform-react-jsx": "^7.13.12",
-    "@babel/preset-env": "^7.14.1",
-    "@babel/preset-react": "^7.13.13",
-    "@types/node": "^15.0.2",
-    "@types/react": "^17.0.5",
-    "@types/react-dom": "^17.0.3",
-    "babel-loader": "^8.2.2",
-    "ts-loader": "^9.1.2",
-    "typescript": "^4.2.4",
-    "url-loader": "^4.1.1",
-    "webpack": "^5.36.2",
-    "webpack-cli": "^4.7.0"
+    "nwb": "0.25.x",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }
