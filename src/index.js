@@ -242,7 +242,7 @@ class ReactImageVideoLightbox extends React.Component {
     return items;
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     window.addEventListener('resize', () => {
       if (window.innerWidth <= 500) {
         this.setState({ iconSize: MOBILE_ICON_SIZE });
