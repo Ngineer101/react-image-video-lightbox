@@ -22,3 +22,8 @@ yarn-error.log*
 
 #VSCode
 .vscode/settings.json
+
+/es
+/lib
+/umd
+/demo/dist
