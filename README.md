@@ -2,8 +2,6 @@
 
 ## [View demo](https://ngineer101.github.io/react-image-video-lightbox)
 
----
-
 ## Installation
 
 ```npm
