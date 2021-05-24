@@ -356,9 +356,30 @@ class ReactImageVideoLightbox extends React.Component {
         }
         {
           this.state.loading &&
-          <>
-            {/* TODO: Add spinner */}
-          </>
+          <div style={{ margin: 'auto', position: 'fixed' }}>
+            <style>
+              {
+                `@keyframes react_image_video_spinner {
+                  0% {
+                    transform: translate3d(-50 %, -50 %, 0) rotate(0deg);
+                  }
+                  100% {
+                    transform: translate3d(-50%, -50%, 0) rotate(360deg);
+                  }
+                }`
+              }
+            </style>
+            <div style={{
+              animation: '1.0s linear infinite react_image_video_spinner',
+              border: 'solid 5px #ffffff',
+              borderBottomColor: '#cfd0d1',
+              borderRadius: '50%',
+              height: 30,
+              width: 30,
+              position: 'fixed',
+              transform: 'translate3d(-50%, -50%, 0)',
+            }}></div>
+          </div>
         }
 
         {
