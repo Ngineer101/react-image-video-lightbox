@@ -32,7 +32,7 @@
     "umd"
   ],
   "peerDependencies": {
-    "react": "16.x"
+    "react": ">= 16.x < 18"
   },
   "devDependencies": {
     "nwb": "0.25.x",
