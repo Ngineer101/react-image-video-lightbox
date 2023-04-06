@@ -1,6 +1,6 @@
 {
   "name": "react-image-video-lightbox",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A React lightbox that supports videos, images and pinch zooming on images. Optimized for mobile UI with swiping, but can be used on desktop as well.",
   "main": "lib/index.js",
   "module": "es/index.js",
